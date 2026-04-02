@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hey Kanika 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: 'Nunito', sans-serif;
+    background: #1a0028;
+    overflow: hidden;
+  }
+
+  /* ── STARS CANVAS ── */
+  #stars {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  }
+
+  /* ── PAGES ── */
+  .page {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 2rem 1.5rem;
+    z-index: 10;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease;
+  }
+  .page.active { opacity: 1; pointer-events: all; }
+
+  /* ── BUTTON ── */
+  .btn {
+    display: inline-block;
+    padding: 1rem 2.8rem;
+    border-radius: 50px;
+    border: none; cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #e91e8c, #c2185b);
+    box-shadow: 0 6px 30px rgba(233,30,140,0.5);
+    transition: transform 0.15s, box-shadow 0.15s;
+    animation: btnGlow 2s ease-in-out infinite;
+  }
+  .btn:hover { transform: scale(1.06); box-shadow: 0 10px 40px rgba(233,30,140,0.7); }
+  .btn:active { transform: scale(0.97); }
+
+  @keyframes btnGlow {
+    0%,100% { box-shadow: 0 6px 30px rgba(233,30,140,0.5); }
+    50% { box-shadow: 0 6px 50px rgba(233,30,140,0.85); }
+  }
+
+  /* ══════════════════════════════
+     PAGE 1 — LANDING
+  ══════════════════════════════ */
+  #p1 .character {
+    width: 160px; margin-bottom: 1.5rem;
+    animation: charFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 8px 24px rgba(233,30,140,0.35));
+  }
+  @keyframes charFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  #p1 h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    color: white;
+    text-align: center;
+    margin-bottom: 0.6rem;
+    text-shadow: 0 0 30px rgba(233,30,140,0.6);
+  }
+
+  #p1 p {
+    color: rgba(255,255,255,0.6);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  /* ══════════════════════════════
+     PAGE 2 — CUTENESS METER
+  ══════════════════════════════ */
+  #p2 .pct-num {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(4rem, 18vw, 9rem);
+    color: #ff6eb4;
+    text-shadow: 0 0 40px rgba(255,110,180,0.7);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    animation: numGlow 1.5s ease-in-out infinite;
+  }
+  @keyframes numGlow {
+    0%,100% { text-shadow: 0 0 30px rgba(255,110,180,0.6); }
+    50% { text-shadow: 0 0 70px rgba(255,110,180,1); }
+  }
+
+  .meter-wrap {
+    width: min(480px, 85vw);
+    background: rgba(255,255,255,0.1);
+    border-radius: 50px; height: 18px;
+    overflow: hidden; position: relative;
+    margin-bottom: 1rem;
+  }
+  .meter-bar {
+    height: 100%; width: 0%; border-radius: 50px;
+    background: linear-gradient(90deg, #e91e8c, #ff6eb4, #fff);
+    box-shadow: 0 0 18px #e91e8c, 0 0 40px #e91e8c;
+    transition: width 2.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .warning-txt {
+    color: #f0c040;
+    font-size: 0.95rem; font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+    animation: warnBlink 1s step-end infinite;
+  }
+  @keyframes warnBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* glitch overlay for system overload */
+  .glitch-overlay {
+    position: fixed; inset: 0; z-index: 50;
+    pointer-events: none;
+    display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    background: rgba(10,0,20,0.96);
+  }
+  .glitch-overlay.show { display: flex; }
+
+  .glitch-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2.5rem, 10vw, 5rem);
+    color: #ff6eb4;
+    text-align: center;
+    margin-bottom: 1rem;
+    animation: glitchAnim 0.2s infinite;
+  }
+  @keyframes glitchAnim {
+    0%   { transform: translate(0,0);   text-shadow: -3px 0 #00ffff, 3px 0 #ff0055; }
+    25%  { transform: translate(-4px,2px); text-shadow: 3px 0 #00ffff,-3px 0 #ff0055; }
+    50%  { transform: translate(4px,-2px); text-shadow: -3px 0 #ff0055, 3px 0 #00ffff; }
+    75%  { transform: translate(-2px,-3px);text-shadow: 2px 0 #00ffff,-2px 0 #ff0055; }
+    100% { transform: translate(0,0);   text-shadow: -3px 0 #00ffff, 3px 0 #ff0055; }
+  }
+
+  .glitch-lines { font-family: monospace; font-size: 0.85rem; color: #00ff99; line-height: 2; text-align: left; }
+  .glitch-lines span { display: block; opacity: 0; animation: lineIn 0.3s forwards; }
+  .glitch-lines span:nth-child(1) { animation-delay: 0.1s; }
+  .glitch-lines span:nth-child(2) { animation-delay: 0.4s; }
+  .glitch-lines span:nth-child(3) { animation-delay: 0.7s; }
+  .glitch-lines span:nth-child(4) { animation-delay: 1.0s; }
+  .glitch-lines span:nth-child(5) { animation-delay: 1.3s; color: #ff6eb4; font-weight: bold; }
+
+  @keyframes lineIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+
+  .glitch-err {
+    margin-top: 1rem;
+    color: #ff4444; font-size: 1rem; font-weight: 700;
+    animation: warnBlink 0.5s step-end infinite;
+  }
+
+  /* ══════════════════════════════
+     PAGE 3 — TAP TO REVEAL
+  ══════════════════════════════ */
+  #p3 .p3-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+  #p3 h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    color: white; margin-bottom: 1.5rem; text-align: center;
+  }
+
+  .reveal-cards { width: min(500px,90vw); display: flex; flex-direction: column; gap: 14px; margin-bottom: 1.5rem; }
+
+  .r-card {
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 18px; padding: 1.3rem 1.5rem;
+    cursor: pointer; min-height: 72px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, border-color 0.3s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .r-card:hover { transform: scale(1.02); background: rgba(255,255,255,0.12); }
+  .r-card.opened {
+    background: rgba(180,40,100,0.18);
+    border-color: rgba(233,30,140,0.5);
+  }
+
+  .r-card .r-heart { font-size: 1.6rem; transition: opacity 0.3s; }
+  .r-card .r-text {
+    font-size: 1.05rem; color: white; font-weight: 600;
+    display: none; text-align: center; line-height: 1.5;
+    animation: fadeSlideIn 0.4s ease;
+  }
+  .r-card.opened .r-heart { display: none; }
+  .r-card.opened .r-text { display: block; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ══════════════════════════════
+     PAGE 4 — LITTLE NOTE
+  ══════════════════════════════ */
+  #p4 h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    color: white; margin-bottom: 2rem; text-align: center;
+  }
+
+  .envelope-wrap {
+    display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+    cursor: pointer;
+  }
+
+  .envelope {
+    width: 200px; height: 140px; position: relative;
+    animation: envFloat 2.5s ease-in-out infinite;
+    transition: transform 0.3s;
+  }
+  .envelope:hover { transform: scale(1.07); }
+  @keyframes envFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+  /* SVG envelope drawn in CSS shapes */
+  .env-body {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 100px; background: #f5f0e0;
+    border-radius: 0 0 14px 14px;
+    border: 3px solid #c9a84c;
+  }
+  .env-flap {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 80px; overflow: hidden;
+  }
+  .env-flap::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 72px solid #f0b8cc;
+    filter: drop-shadow(0 2px 4px rgba(180,80,120,0.3));
+  }
+  .env-line-l {
+    position: absolute; bottom: 0; left: 0;
+    width: 100px; height: 3px; background: #c9a84c;
+    transform-origin: left center; transform: rotate(-25deg);
+  }
+  .env-line-r {
+    position: absolute; bottom: 0; right: 0;
+    width: 100px; height: 3px; background: #c9a84c;
+    transform-origin: right center; transform: rotate(25deg);
+  }
+
+  .env-tap-btn {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: linear-gradient(135deg, #e91e8c, #ff6eb4);
+    border: none; cursor: pointer; font-size: 1.5rem;
+    box-shadow: 0 4px 20px rgba(233,30,140,0.5);
+    animation: btnGlow 1.5s ease-in-out infinite;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .env-tap-label { color: rgba(255,255,255,0.5); font-size: 0.9rem; }
+
+  /* note card */
+  .note-card {
+    display: none;
+    width: min(520px, 90vw);
+    background: #f9eff5; border-radius: 20px;
+    padding: 2rem 2rem 1.5rem;
+    text-align: center;
+    animation: popUp 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  .note-card.show { display: block; }
+
+  @keyframes popUp {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .note-cat { font-size: 5rem; margin-bottom: 1rem; display: block; animation: charFloat 3s ease-in-out infinite; }
+
+  .note-card p {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+    color: #4a2040;
+    line-height: 1.7; margin-bottom: 1rem;
+  }
+
+  /* ── floating particles ── */
+  .particle {
+    position: fixed; pointer-events: none; z-index: 5;
+    font-size: 18px; opacity: 0.75;
+    animation: partFloat linear infinite;
+  }
+  @keyframes partFloat {
+    0%   { transform: translateY(110vh) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(-80px) rotate(360deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<!-- ═══════════ PAGE 1 ═══════════ -->
+<div class="page active" id="p1">
+  <!-- cute waving SVG character -->
+  <svg class="character" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- body -->
+    <ellipse cx="100" cy="175" rx="45" ry="38" fill="white" stroke="#e0c8b0" stroke-width="3"/>
+    <!-- left arm wave -->
+    <ellipse cx="55" cy="155" rx="18" ry="12" fill="white" stroke="#e0c8b0" stroke-width="3" transform="rotate(-40 55 155)">
+      <animateTransform attributeName="transform" type="rotate" from="-40 55 155" to="-55 55 155" dur="0.6s" repeatCount="indefinite" additive="replace" calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1" values="-40 55 155;-55 55 155;-40 55 155"/>
+    </ellipse>
+    <!-- right arm -->
+    <ellipse cx="145" cy="162" rx="18" ry="10" fill="white" stroke="#e0c8b0" stroke-width="3" transform="rotate(25 145 162)"/>
+    <!-- head -->
+    <circle cx="100" cy="100" r="68" fill="white" stroke="#e0c8b0" stroke-width="3"/>
+    <!-- blush left -->
+    <ellipse cx="72" cy="115" rx="14" ry="9" fill="#ffb3c1" opacity="0.7"/>
+    <!-- blush right -->
+    <ellipse cx="128" cy="115" rx="14" ry="9" fill="#ffb3c1" opacity="0.7"/>
+    <!-- left eye (heart) -->
+    <text x="75" y="102" font-size="18" text-anchor="middle">🩷</text>
+    <!-- right eye (heart) -->
+    <text x="125" y="102" font-size="18" text-anchor="middle">🩷</text>
+    <!-- nose -->
+    <ellipse cx="100" cy="110" rx="5" ry="4" fill="#e08090"/>
+    <!-- smile -->
+    <path d="M83 122 Q100 136 117 122" stroke="#e08090" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <!-- sparkles -->
+    <text x="145" y="50" font-size="22">💗</text>
+    <text x="155" y="30" font-size="18">💖</text>
+  </svg>
+
+  <h1>Hey Kanika , cutiepie 🥺</h1>
+  <p>Do you even know how cute you are?</p>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:14px;width:100%;">
+    <button class="btn" onclick="goTo(2)">let's check 🤗😳</button>
+    <button id="noBtn1" class="btn"
+      onmouseover="runAway1(event)"
+      ontouchstart="runAway1(event)"
+      onclick="runAway1(event)"
+      style="position:fixed;bottom:calc(10vh);left:50%;transform:translateX(-50%);">ye kya bakchodi kar raha, nahi dekhna mujhe 😤</button>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 2 — CUTENESS METER ═══════════ -->
+<div class="page" id="p2">
+  <div class="pct-num" id="pctNum">0%</div>
+  <div class="meter-wrap">
+    <div class="meter-bar" id="mBar"></div>
+  </div>
+  <div class="warning-txt" id="warnTxt" style="opacity:0">⚠️ WARNING: TOO CUTE TO HANDLE</div>
+  <button class="btn" id="p2btn" style="opacity:0;pointer-events:none" onclick="showGlitch()">Continue →</button>
+</div>
+
+<!-- system overload glitch overlay -->
+<div class="glitch-overlay" id="glitch">
+  <div class="glitch-title">⚠️ SYSTEM OVERLOADED</div>
+  <div class="glitch-lines">
+    <span>&gt; scanning kanika.exe...</span>
+    <span>&gt; cuteness_level = 847 / 100 ← ???</span>
+    <span>&gt; WARNING: value exceeds INT_MAX</span>
+    <span>&gt; heart.dll → stack overflow detected</span>
+    <span>&gt; FATAL ERROR: too cute. shutting down 💥</span>
+  </div>
+  <div class="glitch-err" id="glitchErr" style="display:none">[ PRESS ANY KEY TO CONTINUE ]</div>
+</div>
+
+<!-- ═══════════ PAGE 3 — TAP TO REVEAL ═══════════ -->
+<div class="page" id="p3">
+  <div class="p3-icon">💝✨</div>
+  <h2>Tap each one to reveal</h2>
+  <div class="reveal-cards" id="revealCards">
+    <div class="r-card" onclick="revealCard(this)">
+      <span class="r-heart">❤️</span>
+      <span class="r-text">I am so sorry kannu 🥺</span>
+    </div>
+    <div class="r-card" onclick="revealCard(this)">
+      <span class="r-heart">❤️</span>
+      <span class="r-text">I promise I'll be a better person for you 💪</span>
+    </div>
+    <div class="r-card" onclick="revealCard(this)">
+      <span class="r-heart">❤️</span>
+      <span class="r-text">Please forgive me... You mean so much to me 💕</span>
+    </div>
+  </div>
+  <button class="btn" id="p3btn" style="opacity:0;pointer-events:none;transition:opacity 0.5s" onclick="goTo(4)">See more →</button>
+</div>
+
+<!-- ═══════════ PAGE 4 — LITTLE NOTE ═══════════ -->
+<div class="page" id="p4">
+  <h2>A little note for you</h2>
+
+  <div class="envelope-wrap" id="envWrap">
+    <div class="envelope">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-line-l"></div>
+      <div class="env-line-r"></div>
+    </div>
+    <button class="env-tap-btn" onclick="openEnvelope()">❤️</button>
+    <span class="env-tap-label">Tap to open</span>
+  </div>
+
+  <div class="note-card" id="noteCard">
+    <span class="note-cat">🐱</span>
+    <p>I'm really sorry, kannu. I accidentally upset the most precious and adorable person in my life — you. 🥺</p>
+    <p>Please forgive me if I hurt you or wasted even a little of your precious time. I promise I didn't mean to. 🥺💕</p>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE 5 — FORGIVEN ═══════════ -->
+<div class="page" id="p5">
+  <div style="font-size:5rem;animation:charFloat 2s ease-in-out infinite">🎉</div>
+  <h2 style="font-family:'Dancing Script',cursive;font-size:clamp(2.5rem,8vw,4rem);color:#ff6eb4;text-shadow:0 0 30px rgba(255,110,180,0.7);margin:1rem 0;text-align:center">Yaaay!! Thank you Kannu!! 🥳</h2>
+  <p style="color:rgba(255,255,255,0.7);font-size:1.15rem;text-align:center;margin-bottom:2rem">You're the sweetest human ever!! 💗</p>
+  <div style="font-size:2.5rem;animation:charFloat 1.5s ease-in-out infinite">💖💝💗💞💓</div>
+</div>
+
+<script>
+// ── STARS ──
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initStars() {
+  stars = [];
+  for (let i = 0; i < 120; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.8 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.5 + 0.1,
+      delta: (Math.random() - 0.5) * 0.02
+    });
+  }
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    s.alpha += s.delta;
+    if (s.alpha <= 0 || s.alpha >= 1) s.delta *= -1;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${Math.max(0,Math.min(1,s.alpha))})`;
+    ctx.fill();
+  });
+  // scattered colored dots
+  requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize', () => { resizeCanvas(); initStars(); });
+resizeCanvas(); initStars(); drawStars();
+
+// ── PARTICLES ──
+const particleEmojis = ['💕','🌸','✨','💫','⭐','🎀','💜','💗'];
+function spawnParticle() {
+  const el = document.createElement('div');
+  el.className = 'particle';
+  el.textContent = particleEmojis[Math.floor(Math.random() * particleEmojis.length)];
+  el.style.left = Math.random() * 100 + 'vw';
+  el.style.fontSize = (12 + Math.random() * 14) + 'px';
+  const dur = 5 + Math.random() * 6;
+  el.style.animationDuration = dur + 's';
+  el.style.animationDelay = -Math.random() * dur + 's';
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), dur * 1000);
+}
+setInterval(spawnParticle, 800);
+
+// ── PAGE NAVIGATION ──
+let currentPage = 1;
+
+function goTo(n) {
+  document.getElementById('p' + currentPage).classList.remove('active');
+  currentPage = n;
+  const next = document.getElementById('p' + n);
+  next.classList.add('active');
+  if (n === 2) startMeter();
+}
+
+// ── METER ANIMATION ──
+function startMeter() {
+  const bar = document.getElementById('mBar');
+  const num = document.getElementById('pctNum');
+  const warn = document.getElementById('warnTxt');
+  const btn = document.getElementById('p2btn');
+
+  let val = 0;
+  const target = 120;
+
+  const interval = setInterval(() => {
+    val += 1;
+    num.textContent = val + '%';
+    const barPct = Math.min(val / 100 * 100, 100);
+    bar.style.width = barPct + '%';
+
+    if (val >= 100) {
+      warn.style.opacity = '1';
+    }
+    if (val >= target) {
+      clearInterval(interval);
+      setTimeout(() => {
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'all';
+      }, 600);
+    }
+  }, 25);
+}
+
+// ── GLITCH OVERLAY ──
+function showGlitch() {
+  const overlay = document.getElementById('glitch');
+  overlay.classList.add('show');
+  setTimeout(() => {
+    document.getElementById('glitchErr').style.display = 'block';
+    document.addEventListener('keydown', dismissGlitch, { once: true });
+    overlay.addEventListener('click', dismissGlitch, { once: true });
+  }, 2200);
+}
+
+function dismissGlitch() {
+  document.getElementById('glitch').classList.remove('show');
+  goTo(3);
+}
+
+// ── REVEAL CARDS ──
+let openedCount = 0;
+function revealCard(el) {
+  if (el.classList.contains('opened')) return;
+  el.classList.add('opened');
+  openedCount++;
+  if (openedCount >= 3) {
+    const btn = document.getElementById('p3btn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'all';
+  }
+}
+
+// ── ENVELOPE ──
+function openEnvelope() {
+  document.getElementById('envWrap').style.display = 'none';
+  document.getElementById('noteCard').classList.add('show');
+}
+
+// ── FORGIVEN ──
+function forgiven() {
+  goTo(5);
+  for (let i = 0; i < 30; i++) setTimeout(spawnParticle, i * 60);
+}
+
+// ── RUN AWAY BUTTON (PAGE 1) ──
+let runCount1 = 0;
+function runAway1(e) {
+  if (e) e.preventDefault();
+  runCount1++;
+  const btn = document.getElementById('noBtn1');
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const bw = btn.offsetWidth || 300;
+  const bh = btn.offsetHeight || 52;
+  const ex = (e && e.touches) ? e.touches[0].clientX : (e ? e.clientX : vw/2);
+  const ey = (e && e.touches) ? e.touches[0].clientY : (e ? e.clientY : vh/2);
+  let nx, ny, attempts = 0;
+  do {
+    nx = bw/2 + Math.random() * (vw - bw);
+    ny = bh/2 + Math.random() * (vh - bh);
+    attempts++;
+  } while (Math.hypot(nx - ex, ny - ey) < 180 && attempts < 25);
+  btn.style.transition = 'left 0.38s cubic-bezier(0.23,1,0.32,1), top 0.38s cubic-bezier(0.23,1,0.32,1)';
+  btn.style.left = nx + 'px';
+  btn.style.top = ny + 'px';
+  btn.style.bottom = 'auto';
+  btn.style.transform = 'none';
+}
+
+// ── RUN AWAY BUTTON
+let runCount = 0;
+function runAway(e) {
+  if (e) e.preventDefault();
+  runCount++;
+  const btn = document.getElementById('noBtn');
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const bw = btn.offsetWidth || 280;
+  const bh = btn.offsetHeight || 52;
+  const ex = (e && e.touches) ? e.touches[0].clientX : (e ? e.clientX : vw/2);
+  const ey = (e && e.touches) ? e.touches[0].clientY : (e ? e.clientY : vh/2);
+  let nx, ny, attempts = 0;
+  do {
+    nx = bw/2 + Math.random() * (vw - bw);
+    ny = bh/2 + Math.random() * (vh - bh);
+    attempts++;
+  } while (Math.hypot(nx - ex, ny - ey) < 160 && attempts < 20);
+
+  btn.style.transition = 'left 0.38s cubic-bezier(0.23,1,0.32,1), top 0.38s cubic-bezier(0.23,1,0.32,1), opacity 0.4s, font-size 0.4s';
+  btn.style.left = nx + 'px';
+  btn.style.top = ny + 'px';
+  btn.style.bottom = 'auto';
+  btn.style.transform = 'none';
+  if (runCount > 3) {
+    btn.style.opacity = Math.max(0.15, 1 - runCount * 0.1) + '';
+    btn.style.fontSize = Math.max(0.55, 1 - runCount * 0.04) + 'rem';
+  }
+}
+</script>
+</body>
+</html>
